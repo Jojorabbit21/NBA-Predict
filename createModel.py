@@ -1,6 +1,8 @@
 # createModel.py - Used to train, test, and create the model
 # Call createModel() to generate a new model
 # May need to edit which lines are commented out based on what range of game data you would like to use
+import os
+import csv
 
 from standardizeStats import basicOrAdvancedStatZScore, basicOrAdvancedStatStandardDeviation, basicOrAdvancedStatMean
 from getDailyMatchups import dailyMatchupsPast
@@ -37,6 +39,7 @@ def infoToDataFrame(dailyGames, meanDict, standardDeviationDict, startDate, endD
 
     for homeTeam,awayTeam in dailyGames[0].items():
 
+        print(homeTeam, awayTeam)
         homeTeamStats = getStatsForTeam(homeTeam, startDate, endDate, season)
         awayTeamStats = getStatsForTeam(awayTeam, startDate, endDate, season)
 
@@ -57,6 +60,11 @@ def infoToDataFrame(dailyGames, meanDict, standardDeviationDict, startDate, endD
         print(currentGame)
         fullDataFrame.append(currentGame)  # Adds this list to list of all games on specified date
 
+        f = open(f'result{season}.csv', 'a', newline='', encoding='utf-8')
+        wr = csv.writer(f)
+        wr.writerow(currentGame)
+        f.close()
+            
     return(fullDataFrame)
 
 
@@ -92,6 +100,10 @@ def createMeanStandardDeviationDicts(startDate, endDate, season):
 # season should be in format 'yyyy-yy' and startOfSeason should be in format 'mm/dd/yyyy'
 def getTrainingSet(startYear, startMonth, startDay, endYear, endMonth, endDay, season, startOfSeason):
 
+    if not os.path.isfile(f'result{season}.csv'):
+        with open(f'result{season}.csv', 'w', encoding='utf-8') as file:
+            file.write('')
+            
     startDate = date(startYear, startMonth, startDay)
     endDate = date(endYear, endMonth, endDay)
 
@@ -102,22 +114,23 @@ def getTrainingSet(startYear, startMonth, startDay, endYear, endMonth, endDay, s
         currentDate = singleDate.strftime("%m/%d/%Y")  # Formats current date in mm/dd/yyyy
         print(currentDate)
 
-        previousDay = singleDate - timedelta(days=1)
-        previousDayFormatted = previousDay.strftime("%m/%d/%Y")
+        nextDay = singleDate + timedelta(days=1)
+        nextDayFormatted = nextDay.strftime("%m/%d/%Y")
 
-        meanAndStandardDeviationDicts = createMeanStandardDeviationDicts(startOfSeason, previousDayFormatted, season)
+        meanAndStandardDeviationDicts = createMeanStandardDeviationDicts(startOfSeason, nextDayFormatted, season)
         meanDict = meanAndStandardDeviationDicts[0]  # Dict in format {stat:statMean}
         standardDeviationDict = meanAndStandardDeviationDicts[1]  # Dict in format {stat:statStDev}
 
         currentDayGames = dailyMatchupsPast(currentDate, season)  # Finds games on current date in loop
-        currentDayGamesAndStatsList = infoToDataFrame(currentDayGames, meanDict, standardDeviationDict, startOfSeason, previousDayFormatted, season)  # Formats Z Score difs for games on current date in loop
+        currentDayGamesAndStatsList = infoToDataFrame(currentDayGames, meanDict, standardDeviationDict, startOfSeason, nextDayFormatted, season)  # Formats Z Score difs for games on current date in loop
 
-        for game in currentDayGamesAndStatsList:  # Adds game with stats to list of all games
-            game.append(currentDate)
-            allGames.append(game)
+    #     for game in currentDayGamesAndStatsList:  # Adds game with stats to list of all games
+    #         game.append(currentDate)
+    #         allGames.append(game)
 
-    print(allGames)
-    return(allGames)
+    # df = pd.DataFrame(allGames)
+    # df.to_csv('trainingSet2021-22.csv')
+    # return(allGames)
 
 
 # Returns a dataframe from list of games with z score differentials
@@ -192,7 +205,6 @@ def saveModel(model, filename):
 def createModel(startYear=None, startMonth=None, startDay=None, endYear=None, endMonth=None, endDay=None, season='2018-19', startOfSeason = '10/16/2018', filename='model.pkl'):
 
     # allGames = getTrainingSet(startYear, startMonth, startDay, endYear, endMonth, endDay, season, startOfSeason)  # Unnecessary if using data from CSV file
-
     # allGamesDataframe = createDataFrame(allGames)  # Unnecessary if using data from CSV file
 
     setCurrentWorkingDirectory('Data')
@@ -201,3 +213,15 @@ def createModel(startYear=None, startMonth=None, startDay=None, endYear=None, en
     logRegModel = performLogReg(allGamesDataframe)
 
     saveModel(logRegModel, filename)
+    
+# createModel(startYear=2016, startMonth=10, startDay=25, endYear=2021, endMonth=6, endDay=16, season='2016-17', startOfSeason='10/25/2016')
+
+getTrainingSet(startYear=2022, 
+                startMonth=2,
+                startDay=6,
+                endYear=2022,
+                endMonth=6,
+                endDay=16,
+                season='2021-22',
+                startOfSeason='10/19/2021'
+                )

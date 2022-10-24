@@ -35,7 +35,7 @@ def getPredictionsCSV(gameDataFilename, outputFilename):
     justZScoreDifs = gamesWithZScoreDifs.loc[:, 'W_PCT':'TS_PCT']  # Slices dataframe to only include statistical differences
 
     setCurrentWorkingDirectory('SavedModels')
-    with open('finalized_model.pkl', 'rb') as file:  # Change filename here if model is named differently
+    with open('model.pkl', 'rb') as file:  # Change filename here if model is named differently
         pickleModel = pickle.load(file)
 
     predictions = pickleModel.predict(justZScoreDifs)  # Creates list of predicted winners and losers
@@ -92,6 +92,6 @@ def makePastPredictions(startYear, startMonth, startDay, endYear, endMonth, endD
 # season(yyyy-yy), start date of season (mm/dd/yyyy), .csv filename for games with z score differences,
 # .csv filename for games with predictions
 # EDIT THIS
-makePastPredictions(2018, 12, 28, 2019, 1, 13, '2018-19', '10/16/2018',
+makePastPredictions(2020, 12, 22, 2021, 7, 20, '2020-21', '12/22/2021',
                     'gamesWithInfo.csv', 'predictions.csv')
 

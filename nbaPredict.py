@@ -11,6 +11,7 @@ from getStats import getStatsForTeam
 from configureCWD import setCurrentWorkingDirectory
 
 
+
 # Returns list of games with Z-Score differentials between teams to be put into a Pandas dataframe
 # startDate & endDate should be 'mm/dd/yyyy' form
 def dailyGamesDataFrame(dailyGames, meanDict, standardDeviationDict, startDate, endDate, season):
@@ -51,7 +52,7 @@ def predictDailyGames(currentDate, season, startOfSeason):
 
     justZScoreDifs = gamesWithZScoreDifs.loc[:,'W_PCT':'TS_PCT']  # Slices only the features used in the model
 
-    with open('finalized_model.pkl', 'rb') as file:  # Change filename here if model is named differently
+    with open('model.pkl', 'rb') as file:  # Change filename here if model is named differently
         pickleModel = pickle.load(file)
 
     predictions = pickleModel.predict_proba(justZScoreDifs)  # Predicts the probability that the home team loses/wins
@@ -92,4 +93,4 @@ def makeInterpretPredictions(currentDate, season, startOfSeason):
 
 # EDIT THIS
 # First arg is date to predict (mm/dd/yyyy), second is season (yyyy-yy), and third is start date of season (mm/dd/yyyy)
-makeInterpretPredictions('01/04/2020', '2019-20', '10/22/2019')
+makeInterpretPredictions('10/23/2022', '2022-23', '10/19/2022')
