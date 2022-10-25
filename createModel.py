@@ -217,8 +217,8 @@ def createModel(startYear=None, startMonth=None, startDay=None, endYear=None, en
 # createModel(startYear=2016, startMonth=10, startDay=25, endYear=2021, endMonth=6, endDay=16, season='2016-17', startOfSeason='10/25/2016')
 
 getTrainingSet(startYear=2022, 
-                startMonth=2,
-                startDay=6,
+                startMonth=4,
+                startDay=11,
                 endYear=2022,
                 endMonth=6,
                 endDay=16,
