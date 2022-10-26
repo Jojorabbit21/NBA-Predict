@@ -124,13 +124,13 @@ def getTrainingSet(startYear, startMonth, startDay, endYear, endMonth, endDay, s
         currentDayGames = dailyMatchupsPast(currentDate, season)  # Finds games on current date in loop
         currentDayGamesAndStatsList = infoToDataFrame(currentDayGames, meanDict, standardDeviationDict, startOfSeason, nextDayFormatted, season)  # Formats Z Score difs for games on current date in loop
 
-    #     for game in currentDayGamesAndStatsList:  # Adds game with stats to list of all games
-    #         game.append(currentDate)
-    #         allGames.append(game)
+        for game in currentDayGamesAndStatsList:  # Adds game with stats to list of all games
+            game.append(currentDate)
+            allGames.append(game)
 
-    # df = pd.DataFrame(allGames)
-    # df.to_csv('trainingSet2021-22.csv')
-    # return(allGames)
+    df = pd.DataFrame(allGames)
+    df.to_csv('trainingSet2021-22.csv')
+    return(allGames)
 
 
 # Returns a dataframe from list of games with z score differentials
@@ -216,12 +216,12 @@ def createModel(startYear=None, startMonth=None, startDay=None, endYear=None, en
     
 # createModel(startYear=2016, startMonth=10, startDay=25, endYear=2021, endMonth=6, endDay=16, season='2016-17', startOfSeason='10/25/2016')
 
-getTrainingSet(startYear=2022, 
-                startMonth=4,
-                startDay=11,
-                endYear=2022,
-                endMonth=6,
-                endDay=16,
-                season='2021-22',
-                startOfSeason='10/19/2021'
+getTrainingSet(startYear=2021, 
+                startMonth=1,
+                startDay=22,
+                endYear=2021,
+                endMonth=7,
+                endDay=20,
+                season='2020-21',
+                startOfSeason='12/22/2020'
                 )

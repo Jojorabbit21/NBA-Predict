@@ -1,5 +1,4 @@
 # getDailyMatchups.py - Finds the daily NBA games
-
 from nba_api.stats.endpoints import leaguegamelog, scoreboard
 from teamIds import teams
 from customHeaders import customHeaders
@@ -11,7 +10,7 @@ from customHeaders import customHeaders
 def dailyMatchupsPast(date, season):
 
     # Obtains a list of teams who played on specified date
-    dailyMatchups = leaguegamelog.LeagueGameLog(season=season, league_id='00', season_type_all_star='Regular Season', date_from_nullable=date,date_to_nullable=date, headers=customHeaders,timeout=60)
+    dailyMatchups = leaguegamelog.LeagueGameLog(season=season, league_id='00', season_type_all_star='Regular Season', date_from_nullable=date,date_to_nullable=date, headers=customHeaders,timeout=120)
     dailyMatchupsDict = dailyMatchups.get_normalized_dict()
     listOfTeams = dailyMatchupsDict['LeagueGameLog']
 
