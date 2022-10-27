@@ -216,12 +216,12 @@ def createModel(startYear=None, startMonth=None, startDay=None, endYear=None, en
     
 # createModel(startYear=2016, startMonth=10, startDay=25, endYear=2021, endMonth=6, endDay=16, season='2016-17', startOfSeason='10/25/2016')
 
-getTrainingSet(startYear=2021, 
-                startMonth=1,
-                startDay=22,
-                endYear=2021,
-                endMonth=7,
-                endDay=20,
-                season='2020-21',
-                startOfSeason='12/22/2020'
+getTrainingSet(startYear=2019, 
+                startMonth=12,
+                startDay=2,
+                endYear=2020,
+                endMonth=10,
+                endDay=11,
+                season='2019-20',
+                startOfSeason='10/22/2019'
                 )
